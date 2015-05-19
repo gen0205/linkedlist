@@ -13,6 +13,7 @@ int add(linkedlist_data *pData, char *pString)
 {
     // next data
     linkedlist_data *l_pNextData;
+    int length = (int) strlen(pString) + 1;
     
     if(pData->pString != NULL)
     {
@@ -27,7 +28,7 @@ int add(linkedlist_data *pData, char *pString)
         return 0;
     }
     
-    pData->pString = (char*) malloc(sizeof(pString));
+    pData->pString = (char*) malloc(length);
     if(pData->pString == NULL)
     {
         return 0;
@@ -48,7 +49,7 @@ int showAllData(linkedlist_data *pFirstData)
 {
     printf("showAllData() start...\n");
     linkedlist_data *l_pData = pFirstData;
-
+    
     while(1)
     {
         printf("\n========================================\n");
@@ -56,7 +57,7 @@ int showAllData(linkedlist_data *pFirstData)
         printf("index -> %d , string -> %s \n", l_pData->idx, l_pData->pString);
         printf("pNextData -> %p \n", l_pData->pNextData);
         printf("========================================\n");
-
+        
         if(l_pData->pNextData->pString == NULL)
         {
             break;
