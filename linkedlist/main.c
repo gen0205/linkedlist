@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "LinkedList.h"
 
-// first data of linkedlist.
-linkedlist_data first_data;
+// head of linkedlist.
+linkedlist_data list_head;
 
 // ファイル読み込み
 int readFile(char* fileName)
@@ -23,7 +23,7 @@ int readFile(char* fileName)
     printf("------------------------------------------\n");
     while( fgets( string, 100, pFile ) != NULL ){
         printf( "%s", string );
-        add(&first_data, string);
+        add(&list_head, string);
     }
     printf("\n------------------------------------------\n");
     
@@ -36,22 +36,25 @@ int main(int argc, const char * argv[])
     
     printf("start program...\n\n");
     
+    if(create(&list_head) == 0)
+    {
+        printf("failed create() ...\n");
+        return 0;
+    }
+    
     if(readFile("sample.dat") == 0)
     {
         return 0;
     }
     // 初期状態全件表示
-    showAllData(&first_data);
+    showAllData(&list_head);
     
     printf("\nremoveData() start\n\n");
-    removeData(&first_data, 0);
+    removeData(&list_head, 0);
     printf("\nremoveData() finish\n\n");
     
-    printf("デバッグ %s\n",first_data.pString);
-
-    
     // removeData()後全件表示
-    showAllData(&first_data);
+    showAllData(&list_head);
     
     printf("\nfinish program!!\n");
     return 1;

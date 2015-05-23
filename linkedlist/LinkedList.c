@@ -5,39 +5,63 @@
 
 int g_count = 0;
 
+int create(linkedlist_data *pHead)
+{
+    linkedlist_data *pFirstData;
+    
+//    pHead = (linkedlist_data*) malloc(sizeof(linkedlist_data));
+//    if(pHead == NULL)
+//    {
+//        return 0;
+//    }
+    pFirstData = (linkedlist_data*) malloc(sizeof(linkedlist_data));
+    if(pFirstData == NULL)
+    {
+        return 0;
+    }
+    pHead -> pNextData = pFirstData;
+    // data of first index
+    pHead -> pNextData -> pString = NULL;
+    pHead -> pNextData -> pNextData = NULL;
+    return 1;
+}
+
 // ========================================= //
 // 受け取ったリスト要素にデータを挿入する。
 // 成功した場合は1を返す。
 // ========================================= //
-int add(linkedlist_data *pData, char *pString)
+int add(linkedlist_data *pHead, char *pString)
 {
+    linkedlist_data *pCurrent = pHead->pNextData;
     // next data
-    linkedlist_data *l_pNextData;
+    linkedlist_data *pNext;
     int length = (int) strlen(pString) + 1;
     
-    if(pData->pString != NULL)
+    while(1)
     {
-        // 既にデータが格納されていた場合は次の連結データに格納
-        add(pData->pNextData, pString);
-        return 1;
+        if(pCurrent -> pString == NULL)
+        {
+            break;
+        }
+        pCurrent = pCurrent -> pNextData;
     }
-    
-    l_pNextData= (linkedlist_data*) malloc(sizeof(linkedlist_data));
-    if(l_pNextData== NULL)
-    {
-        return 0;
-    }
-    
-    pData->pString = (char*) malloc(length);
-    if(pData->pString == NULL)
+    pNext= (linkedlist_data*) malloc(sizeof(linkedlist_data));
+    if(pNext== NULL)
     {
         return 0;
     }
-    
+    pCurrent->pString = (char*) malloc(length);
+    if(pCurrent->pString == NULL)
+    {
+        return 0;
+    }
     // set data
-    pData->idx = g_count++;
-    strcpy(pData->pString, pString);
-    pData->pNextData = l_pNextData;
+    pCurrent -> idx = g_count++;
+    strcpy(pCurrent -> pString, pString);
+    pCurrent -> pNextData = pNext;
+    // next element
+    pCurrent -> pNextData -> pString = NULL;
+    pCurrent -> pNextData -> pNextData = NULL;
     
     return 1;
 }
@@ -45,41 +69,41 @@ int add(linkedlist_data *pData, char *pString)
 // ========================================= //
 // 本関数を呼ぶ事で連結リスト内に格納されている全てのデータを表示する。
 // ========================================= //
-int showAllData(linkedlist_data *pFirstData)
+int showAllData(linkedlist_data *pHead)
 {
     printf("showAllData() start...\n");
-    linkedlist_data *l_pData = pFirstData;
+    linkedlist_data *pCurrent = pHead -> pNextData;
     
     while(1)
     {
         printf("\n========================================\n");
-        printf("pData -> %p \n", l_pData);
-        printf("index -> %d , string -> %s \n", l_pData->idx, l_pData->pString);
-        printf("pNextData -> %p \n", l_pData->pNextData);
+        printf("pData -> %p \n", pCurrent);
+        printf("index -> %d , string -> %s \n", pCurrent -> idx, pCurrent -> pString);
+        printf("pNextData -> %p \n", pCurrent -> pNextData);
         printf("========================================\n");
         
-        if(l_pData->pNextData->pString == NULL)
+        if(pCurrent -> pNextData -> pString == NULL)
         {
             break;
         }
-        l_pData = l_pData->pNextData;
+        pCurrent = pCurrent -> pNextData;
     }
     printf("\nshowAllData() finish!\n");
     return 1;
 }
 
-int insert(linkedlist_data *pFirstData, char *string, int index)
+int insert(linkedlist_data *pHead, char *string, int index)
 {
     
     return 0;
 }
 
-int removeData(linkedlist_data *pFirstData, int index)
+int removeData(linkedlist_data *pHead, int index)
 {
     int i = 0;
     // 前方要素を保持するポインタ
-    linkedlist_data *l_pPreviousData = NULL;
-    linkedlist_data *l_pData = pFirstData;
+    linkedlist_data *pPrevious = pHead;
+    linkedlist_data *pCurrent = pHead -> pNextData;
     
     if(index < 0)
     {
@@ -94,22 +118,13 @@ int removeData(linkedlist_data *pFirstData, int index)
         {
             break;
         }
-        l_pPreviousData = l_pData;
-        l_pData = l_pData -> pNextData;
+        pPrevious = pCurrent;
+        pCurrent = pCurrent -> pNextData;
         i++;
     }
-    
-    // 前方データがNULLということはリストの先頭データを指す。
-    if(l_pPreviousData == NULL)
-    {
-        // 先頭要素をその次の要素に上書きする。
-        pFirstData = pFirstData->pNextData;
-        printf("デバッグ %s\n",pFirstData->pString);
-        return 1;
-    }
     // 前方要素が保持している次の要素内容を置き換える。
-    l_pPreviousData->pNextData = l_pData->pNextData;
-    free(l_pData);
+    pPrevious -> pNextData = pCurrent -> pNextData;
+    free(pCurrent);
     
     return 1;
 }
