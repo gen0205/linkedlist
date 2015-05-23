@@ -29,12 +29,7 @@ int setIndex(linkedlist_data *pHead)
 int create(linkedlist_data *pHead)
 {
     linkedlist_data *pFirstData;
-    
-//    pHead = (linkedlist_data*) malloc(sizeof(linkedlist_data));
-//    if(pHead == NULL)
-//    {
-//        return 0;
-//    }
+
     pFirstData = (linkedlist_data*) malloc(sizeof(linkedlist_data));
     if(pFirstData == NULL)
     {
@@ -48,10 +43,6 @@ int create(linkedlist_data *pHead)
     return SUCCESS;
 }
 
-// ========================================= //
-// 受け取ったリスト要素にデータを挿入する。
-// 成功した場合は1を返す。
-// ========================================= //
 int add(linkedlist_data *pHead, char *pString)
 {
     linkedlist_data *pCurrent = pHead->pNextData;
@@ -90,9 +81,6 @@ int add(linkedlist_data *pHead, char *pString)
     return SUCCESS;
 }
 
-// ========================================= //
-// 本関数を呼ぶ事で連結リスト内に格納されている全てのデータを表示する。
-// ========================================= //
 int showAllData(linkedlist_data *pHead)
 {
     printf("showAllData() start...\n");
