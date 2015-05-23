@@ -17,13 +17,13 @@ int create(linkedlist_data *pHead)
     pFirstData = (linkedlist_data*) malloc(sizeof(linkedlist_data));
     if(pFirstData == NULL)
     {
-        return 0;
+        return FAILURE;
     }
     pHead -> pNextData = pFirstData;
     // data of first index
     pHead -> pNextData -> pString = NULL;
     pHead -> pNextData -> pNextData = NULL;
-    return 1;
+    return SUCCESS;
 }
 
 // ========================================= //
@@ -48,12 +48,12 @@ int add(linkedlist_data *pHead, char *pString)
     pNext= (linkedlist_data*) malloc(sizeof(linkedlist_data));
     if(pNext== NULL)
     {
-        return 0;
+        return FAILURE;
     }
     pCurrent->pString = (char*) malloc(length);
     if(pCurrent->pString == NULL)
     {
-        return 0;
+        return FAILURE;
     }
     // set data
     pCurrent -> idx = g_count++;
@@ -63,7 +63,7 @@ int add(linkedlist_data *pHead, char *pString)
     pCurrent -> pNextData -> pString = NULL;
     pCurrent -> pNextData -> pNextData = NULL;
     
-    return 1;
+    return SUCCESS;
 }
 
 // ========================================= //
@@ -89,13 +89,13 @@ int showAllData(linkedlist_data *pHead)
         pCurrent = pCurrent -> pNextData;
     }
     printf("\nshowAllData() finish!\n");
-    return 1;
+    return SUCCESS;
 }
 
 int insert(linkedlist_data *pHead, char *string, int index)
 {
     
-    return 0;
+    return FAILURE;
 }
 
 int removeData(linkedlist_data *pHead, int index)
@@ -108,7 +108,7 @@ int removeData(linkedlist_data *pHead, int index)
     if(index < 0)
     {
         printf("failed removeData(), index value is invalid...\n");
-        return 0;
+        return FAILURE;
     }
     
     // 削除対象の要素を取得します。
@@ -126,7 +126,7 @@ int removeData(linkedlist_data *pHead, int index)
     pPrevious -> pNextData = pCurrent -> pNextData;
     free(pCurrent);
     
-    return 1;
+    return SUCCESS;
 }
 
 

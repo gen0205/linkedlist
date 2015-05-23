@@ -16,7 +16,7 @@ int readFile(char* fileName)
     if(pFile == NULL)
     {
         printf("readFile() failed...\n");
-        return 0;
+        return FAILURE;
     }
     
     // pData = &first_data;
@@ -28,7 +28,7 @@ int readFile(char* fileName)
     printf("\n------------------------------------------\n");
     
     printf("readFile finish!\n");
-    return 1;
+    return SUCCESS;
 }
 
 int main(int argc, const char * argv[])
@@ -36,15 +36,15 @@ int main(int argc, const char * argv[])
     
     printf("start program...\n\n");
     
-    if(create(&list_head) == 0)
+    if(create(&list_head) == FAILURE)
     {
         printf("failed create() ...\n");
-        return 0;
+        return FAILURE;
     }
     
-    if(readFile("sample.dat") == 0)
+    if(readFile("sample.dat") == FAILURE)
     {
-        return 0;
+        return FAILURE;
     }
     // 初期状態全件表示
     showAllData(&list_head);
@@ -57,6 +57,6 @@ int main(int argc, const char * argv[])
     showAllData(&list_head);
     
     printf("\nfinish program!!\n");
-    return 1;
+    return SUCCESS;
 }
 
