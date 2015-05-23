@@ -3,7 +3,28 @@
 #include <string.h>
 #include "LinkedList.h"
 
-int g_count = 0;
+int setIndex(linkedlist_data *pHead);
+
+// ========================================= //
+// set index of elements
+// note that this function must be called after list controll (add,insert,remove...)
+// ========================================= //
+int setIndex(linkedlist_data *pHead)
+{
+    linkedlist_data *pCurrent = pHead -> pNextData;
+    int indexNumber = 0;
+    while(1)
+    {
+        pCurrent -> idx = indexNumber;
+        if(pCurrent -> pNextData == NULL)
+        {
+            break;
+        }
+        indexNumber++;
+        pCurrent = pCurrent -> pNextData;
+    }
+    return SUCCESS;
+}
 
 int create(linkedlist_data *pHead)
 {
@@ -21,6 +42,7 @@ int create(linkedlist_data *pHead)
     }
     pHead -> pNextData = pFirstData;
     // data of first index
+    pHead -> idx = 0;
     pHead -> pNextData -> pString = NULL;
     pHead -> pNextData -> pNextData = NULL;
     return SUCCESS;
@@ -36,6 +58,7 @@ int add(linkedlist_data *pHead, char *pString)
     // next data
     linkedlist_data *pNext;
     int length = (int) strlen(pString) + 1;
+    int index = 0;
     
     while(1)
     {
@@ -44,6 +67,7 @@ int add(linkedlist_data *pHead, char *pString)
             break;
         }
         pCurrent = pCurrent -> pNextData;
+        index++;
     }
     pNext= (linkedlist_data*) malloc(sizeof(linkedlist_data));
     if(pNext== NULL)
@@ -56,7 +80,7 @@ int add(linkedlist_data *pHead, char *pString)
         return FAILURE;
     }
     // set data
-    pCurrent -> idx = g_count++;
+    pCurrent -> idx = index;
     strcpy(pCurrent -> pString, pString);
     pCurrent -> pNextData = pNext;
     // next element
@@ -100,32 +124,28 @@ int insert(linkedlist_data *pHead, char *string, int index)
 
 int removeData(linkedlist_data *pHead, int index)
 {
-    int i = 0;
     // 前方要素を保持するポインタ
     linkedlist_data *pPrevious = pHead;
     linkedlist_data *pCurrent = pHead -> pNextData;
-    
     if(index < 0)
     {
         printf("failed removeData(), index value is invalid...\n");
         return FAILURE;
     }
-    
     // 削除対象の要素を取得します。
     while(1)
     {
-        if(i == index)
+        if(pCurrent -> idx == index)
         {
             break;
         }
         pPrevious = pCurrent;
         pCurrent = pCurrent -> pNextData;
-        i++;
     }
     // 前方要素が保持している次の要素内容を置き換える。
     pPrevious -> pNextData = pCurrent -> pNextData;
     free(pCurrent);
-    
+    setIndex(pHead);
     return SUCCESS;
 }
 
